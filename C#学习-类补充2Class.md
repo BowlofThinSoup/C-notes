@@ -309,10 +309,3 @@ public string this [int wordnum] => words [wordnum];
 public string get_Item(int wordNum){}
 public void set_Item(int wordNum,string value){}
 ```
-
-
-
-
-
-
-
