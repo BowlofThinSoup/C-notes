@@ -2,6 +2,8 @@
 
 ### 继承
 
+[TOC]
+
 #### 继承👑
 
 - 一个类可以继承另一个类
@@ -149,9 +151,9 @@ Stock s = (Stock)a;//downcast fails:a is not a Stock
 
 
 
-##### AS操作符 
+#### AS操作符 
 
-as操作符会执行向下转换，如果转换失败，**不会抛出异常**，值会变为null
+as操作符会执行向下转换，如果转换失败，**不会抛出异常**，**值会变为null**
 
 ```csharp
 Asset a = new Asset();
@@ -164,3 +166,104 @@ as操作符无法做自定义转换
 long x = 3 as long; //compile-time error
 ```
 
+
+
+#### IS操作符
+
+is操作符会检验引用的转换是否成功。换句话说，**判断对象是否派生于某个类（或者实现了某个接口）**
+
+通常用于==**向下转换时的验证**==
+
+```csharp
+if (a is Stock)
+    Console.WriteLine(((stock)a).SharesOwned);
+```
+
+如果拆箱转换可以成功的话，那么使用is操作符的结果会是true
+
+
+
+##### Is操作符与模式变量
+
+C#7里，在使用is操作符的时候，可以引入一个变量
+
+那么上面的式子可以写作：
+
+```csharp
+if (a is Stock s👈)
+    Console.WriteLine(s👈.SharesOwned);
+```
+
+等价于：
+
+```csharp
+Stock s;
+if (a is Stock)
+{
+    s = (Stock) a;
+    Console.WriteLine(s.SharesOwned); 
+}  
+```
+
+引入的变量可以**立即“消费”**
+
+```csharp
+if (a is Stock s && s.ShareOwned > 10000)
+    Console.WriteLine("Wealthy");
+```
+
+并且变量在else语句中依然有效,就算出了if语句依然可以使用
+
+```csharp
+if (a is Stock s && s.ShareOwned > 10000)
+    Console.WriteLine("Wealthy");
+else 
+    s = new Stock();//s is in scope
+Console.WriteLine(s.ShareOwned);//still in scope
+```
+
+
+
+#### Virtual函数成员
+
+标记为virtual的函数可以被子类重写，包括方法、属性、索引器、事件
+
+```csharp
+public class Asset
+{
+    public string Name;
+    public virtual decimal Liability => 0;👈
+}
+```
+
+使用Override修饰符，子类可以重写父类的函数
+
+```csharp
+public class Stock : Asset
+{
+    public long ShareOwned;
+}
+public class House : Asset
+{
+    public decimal Mortgage;
+    public override 👈 decimal liability => Mortgage;
+}
+```
+
+```csharp
+House mansion = new House { Name = "McMansion",Mortgage = 250000};
+Asset a = mansion;
+Console.WriteLine(mansion.liability);//250000
+Console.WriteLine(a.liability);//250000
+```
+
+##### Override
+
+ virtual方法和重写方法的签名、返回类型、可访问程度必须是一样的
+
+重写方法里使用base关键字可以调用父类的实现
+
+注意：
+
+- 在构造函数里调用virtual方法可能比较危险，因为编写子类的开发人员可能不知道他们在重写方法的时候，面对的是一个未完全初始化的对象
+- 换句话说，重写的方法可能会访问依赖于还未被构造函数初始化的字段的属性或方法
