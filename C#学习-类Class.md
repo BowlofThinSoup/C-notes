@@ -35,7 +35,7 @@
 - 点运算符链接了对象的名称和成员的名称  
 
 #### 类的例子 
-```C++
+```csharp
     using System;
     namespace BoxApplication
     {
