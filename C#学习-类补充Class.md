@@ -1,17 +1,19 @@
 # C#学习
-## 类class（补充）😁
+### 类class（补充）😁
 ***
 [Toc]
 **参考书目**：<div align=center>
-![C# 7.0 in a Nutshell](https://img01.haolizi.net/2019/07/28/b3/a/b/b3ab2ef41ea3e2bebcb8e43c48a27616.png) </div> 
-  
+![C# 7.0 in a Nutshell](https://img01.haolizi.net/2019/07/28/b3/a/b/b3ab2ef41ea3e2bebcb8e43c48a27616.png) 
+
+</div> 
+
 Class：最常见的一种**引用类型**，基本结构如下：  
 ```csharp
     Class ClassName
     {
         Class Menber//类成员
     }
-```  
+```
 Class关键字之前可以加1-2个关键字，用来限定访问或标记  
 ClassName之后可以加以下几种修饰符
 - `<T>`，表示泛型
@@ -29,7 +31,7 @@ ClassMenber表示类成员，有以下几种
 - 嵌套类型
 
 
-##### Field字段
+#### Field字段
 Field：是Class或Struct的成员，是一个**变量**
 ```csharp
 Class ClassName
@@ -44,11 +46,11 @@ Class ClassName
 - 与继承有关：new，unsafe
 - 与线程有关：volunteer
 
-###### readonly修饰符
+##### readonly修饰符
 - 可以防止字段在构造之后被改变
 - 只能在声明的时候赋值，或者在构造函数里赋值
 
-###### 字段初始化  
+##### 字段初始化  
 - 字段可选初始化
 - 未初始化的字段有一个**默认值**（int:0;char:\0;引用类型:null）
 - ==字段的**初始化在构造函数之前进行**==
@@ -60,13 +62,13 @@ Class ClassName
 ```
 同时声明多个字段时，用逗号（,）隔开  
 
-##### Method方法
+#### Method方法
 Method：由一些语句组成，会执行某**个**动作（一个方法最好只做一件事）
 参数：方法可以接受一些输入的数据，称为方法的参数，由方法调用者提供
 返回类型：方法执行完可能会返回一些数据，返回类型表示返回数据的数据类型；当什么都不返回时，返回类型就是void，表示什么都不返回
 引用类型：ref/out可以决定引用的类型
 
-###### 方法的签名
+##### 方法的签名
 ==类型内部签名必须统一==
 签名：***方法名***，***参数类型***（**包含参数的顺序**）和**参数名称及返回类型无关**
 例如：
@@ -101,7 +103,7 @@ Method：由一些语句组成，会执行某**个**动作（一个方法最好�
 ```
 虽然函数名一致，但是参数**位置不一样**，函数签名也不同
 
-######  **expression-bodied** 方法
+#####  **expression-bodied** 方法
 ```csharp
     int foo(int x)
     { 
