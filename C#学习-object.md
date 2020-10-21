@@ -6,14 +6,14 @@
 
 #### Object
 
-object(System.Object)是所有类型的终极父类
+object(System.Object)是所有类型的**终极父类**
 
-所有类型都可以向上转换为object
+==所有类型都可以向上转换为object==
 
 简单例子：
 
 ```csharp
-public class Stack
+public class Stack//实现简易的栈
 {
     int position;
     object[] date = new object[10];
@@ -44,9 +44,9 @@ int three = (int) stack.Pop();
 
 ##### Boxing装箱
 
-装箱就是把值类型的值转化为引用类型实例的动作
+==装箱==就是把**值类型**的**值**转化为**引用类型实例**的动作
 
-目标引用类型可以是object，也可以是某个接口
+目标引用类型可以是==object==，也可以是某个==接口==
 
 ```csharp
 int x = 9;
@@ -61,11 +61,11 @@ object obj = x; //box the int
 int y = (int)obj; //unbox the int
 ```
 
-拆箱需要显式的转换
+拆箱需要==**显式的转换**==
 
 运行时会检查这个值类型和object对象的真实类型是否匹配
 
-如果不适合就抛出InvalidCastExpression
+如果不适合就抛出 InvalidCastExpression
 
 ```csharp
 object obj = 9;      //9 is inferred to be of type int
@@ -86,7 +86,7 @@ int x = (int)(double) obj;  //x is now 3
 
 装箱对于类型统一是非常重要的，但是系统不够完美
 
-数组和泛型只支持引用转换，不支持装箱
+==数组和泛型只支持引用转换，不支持装箱==
 
 ```csharp
 object[] a1 = new string[3]; //Legal
@@ -95,9 +95,9 @@ object[] a2 = new int[3];    //Error
 
 ##### 装箱拆箱的复制
 
-装箱会把值类型的实例复制到一个新的对象
+**装箱**会把值类型的实例==复制到一个新的对象==
 
-拆箱会把这个对象的内容再复制给一个值类型的实例
+**拆箱**会把这个对象的内容==再复制给一个值类型的实例==
 
 ```csharp
 int i = 3;
@@ -110,13 +110,13 @@ Console.WriteLine(boxed);  //3
 
 C#的程序既会做静态的类型检查（编译时）也会做运行时的类型检查（CLR）
 
-静态检查：不运行程序的情况下，让编译器保证你程序的正确性
+静态检查：不运行程序的情况下，让**编译器**保证你程序的正确性
 
 ```csharp
 int x = "5";👈//静态检查报错
 ```
 
-运行时检查：由CLR执行，发生在向下的引用转换或者拆箱的时候
+运行时检查：由**CLR**执行，==发生在向下的引用转换或者拆箱的时候==
 
 ```csharp
 object y = "5";
@@ -133,18 +133,18 @@ int z = (int)y;   //Runtime error,downcast failed
 
 有两种方式可以获取System.Type对象：
 
-- 在实例上调用GetType()方法
-- 在类型名上使用typeof操作符
+- 在**实例**上调用**GetType()**方法
+- 在**类型名**上使用**typeof**操作符
 
-GetType()是在运行时被算出的
+GetType()是在**运行时**被算出的
 
-typeof是在编译时被算出的（静态）（当涉及到泛型类型参数时，它是由JIT编译器来解析的）
+typeof是在**编译时**被算出的（静态）（当涉及到泛型类型参数时，它是由**JIT编译器**来解析的）
 
 
 
 ##### System.Type
 
-System.Type属性有：类型的名称，Asembly，基类等等
+System.Type属性有：**类型的名称**，Asembly，基类等等
 
 ```csharp
 using system
@@ -167,7 +167,7 @@ class Test
 
 ##### ToString()方法
 
-ToString()方法会返回一个类型实例的默认文本表示
+ToString()方法会返回一个**类型实例的默认文本表示**
 
 所有的内置类型都重写了该方法
 
@@ -176,9 +176,9 @@ int x = 1;
 string s = x.ToString();  //s is "1"
 ```
 
-可以在自定义的类型上重写ToString()方法
+可以在自定义的类型上**重写ToString()方法**
 
-如果不重写该方法，那么就会返回该类型的名称
+==如果不重写该方法，那么就会返回该类型的名称==
 
 ```csharp
 public class Panda
@@ -200,7 +200,7 @@ Console.WriteLine(p);//Petey
 ```csharp
 int x = 1;
 string s1 = x.ToString();//Calling on nonboxed value
-object box = x;
+object box = x;👈
 string s2 = box.ToString();//Calling on boxed value
 ```
 
