@@ -178,13 +178,82 @@ public class RichTextBox : TextBox,IUndoable👈
 }
 ```
 
+```csharp
+RichTextBox r = new RichTextBox();
+r.Undo();                    //RichTextBox.Undo
+((IUndoable)r).Undo();       //RichTextBox.Undo（转化为接口实现）
+((TextBox)r).Undo();         //出错，父类里没有Undo()方法，只有IUndoable.Undo()
+```
 
 
 
+- 如果Textbox是隐式实现的Undo
 
-#### 重新实现接口的替代方案
+```csharp
+public class Textbox : IUndoable
+{
+    public void Undo() => Console.WriteLine("TextBox.Undo");
+}
+```
+
+- 那么：
+
+```csharp
+RichTextBox r = new RichTextBox();
+r.Undo();                    //RichTextBox.Undo
+((IUndoable)r).Undo();       //RichTextBox.Undo（转化为接口实现）
+((TextBox)r).Undo();         //TextBox.Undo（转化为父类实现）📌
+```
+
+- 说明重新实现接口这种“劫持”只对转化为接口后的调用起作用，对转化为基类后的调用不起作用
+- ==重新实现适用于重写显式实现的接口成员==
+
+
+
+##### 重新实现接口的替代方案
 
 即使是显式实现的接口，接口的重新实现也可能有一些问题：
 
 - 子类无法调用基类的方法
 - 基类的开发人员没有预见到方法会被重新实现，并且可能不允许潜在的后果
+
+最好的办法是：
+
+- 设计一个无需重新实现的基类
+
+  - 隐式实现成员的时候，按需标记virtual
+  - 显示实现成员的时候，可以这样做：
+
+  ```csharp
+  public class TextBox : IUndoable
+  {
+      void IUndoable.Undo() => Undo();👈   //calls method below
+      protected virtual void Undo() => Console.WriteLine("TextBox.Undo");👈
+  }
+  
+  public class RichTextBox : TextBox
+  {
+      public override void Undo() => Console.WriteLine("RichTextBox.Undo");👈
+  }
+  ```
+
+  - 如果不想有子类，那么直接把class标记sealed
+
+
+
+#### 接口与装箱
+
+==把struct转化为接口会导致装箱==
+
+调用struct上**隐式实现的成员**不会导致装箱
+
+```csharp
+interface I { void Foo();}
+struct S : I { public void Foo(){}}
+···
+S s = new s();
+s.Foo();   //no boxing
+I i = s;   //Box occur when casting to interface
+i.Foo();   
+```
+
